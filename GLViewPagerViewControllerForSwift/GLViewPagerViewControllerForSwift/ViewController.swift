@@ -59,8 +59,8 @@ class ViewController: GLViewPagerViewController,GLViewPagerViewControllerDataSou
         // Do any additional setup after loading the view, typically from a nib.
         
         self.navigationItem.title = "Paged Tabs"
-        self.dataSource = self;
-        self.delegate = self;
+        self.setDataSource(newDataSource: self)
+        self.setDelegate(newDelegate: self)
         self.padding = 10
         self.leadingPadding = 10
         self.trailingPadding = 10
@@ -68,6 +68,7 @@ class ViewController: GLViewPagerViewController,GLViewPagerViewControllerDataSou
         self.tabAnimationType = GLTabAnimationType.GLTabAnimationType_WhileScrolling
         self.indicatorColor = UIColor.init(colorLiteralRed: 255.0 / 255.0, green: 205.0 / 255.0, blue: 0.0, alpha: 1.0)
         self.supportArabic = false
+        self.fixTabWidth = true
         
         
         self.viewControllers = [
