@@ -289,7 +289,7 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
     
     // MARK: - User Events
     func tapInTabView(tapGR:UIGestureRecognizer) -> Void {
-        var tabIndex = (tapGR.view?.tag)! - kTabTagBegin
+        let tabIndex = (tapGR.view?.tag)! - kTabTagBegin
         self ._selectTab(tabIndex: tabIndex, animate: false)
     }
     
@@ -521,7 +521,7 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
             self.indicatorView.frame = frameofTabView
         }
         
-        let tabView:UIView = self.tabViews[tabIndex] as! UIView
+        let tabView:UIView = self.tabViews[tabIndex] 
         var frame:CGRect = tabView.frame
         
         frame.origin.x += frame.width / 2
@@ -623,7 +623,7 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
     func _caculateTabOffsetWidth(pageIndex:Int) -> Void {
         let currentTabIndex:Int = pageIndex
         let currentTabView:UIView = self.tabViews[currentTabIndex]
-        var previousTabView:UIView? = currentTabIndex > 0 ? self.tabViews[currentTabIndex - 1] : nil
+        let previousTabView:UIView? = currentTabIndex > 0 ? self.tabViews[currentTabIndex - 1] : nil
         let afterTabView:UIView? = (currentTabIndex < self.tabViews.count - 1) ? self.tabViews[currentTabIndex + 1] : nil
         
         if currentTabIndex == 0 {

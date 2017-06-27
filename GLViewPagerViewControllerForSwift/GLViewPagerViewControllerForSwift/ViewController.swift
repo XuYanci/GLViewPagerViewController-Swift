@@ -40,9 +40,6 @@ class GLPresentViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         self.presentLabel.center = self.view.center
     }
-   
-    
-    
 }
 
 
