@@ -27,7 +27,7 @@ public enum GLTabAnimationType:Int {
 
 // MARK: - Protocols 
 @objc public protocol GLViewPagerViewControllerDataSource:NSObjectProtocol {
-    @objc optional func numberOfTabsForViewPager(_ viewPager:GLViewPagerViewController)
+    @objc optional func numberOfTabsForViewPager(_ viewPager:GLViewPagerViewController) -> Int
     @objc optional func viewForTabIndex(_ viewPager:GLViewPagerViewController, index: Int) -> UIView
     @objc optional func contentViewControllerForTabAtIndex(_ viewPager:GLViewPagerViewController, index: Int) -> UIViewController
     @objc optional func contentViewForTabAtIndex(_ viewPager:GLViewPagerViewController, index: Int) -> UIView
@@ -93,9 +93,23 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
     internal var contentViewControllers:NSMutableArray = NSMutableArray()
     internal var contentViews:NSMutableArray = NSMutableArray()
     internal var tabViews:NSMutableArray = NSMutableArray()
+    internal var datasouceHas = _datasourceHas(numberOfTabsForViewPager: false, viewForTabIndex: false, contentViewControllerForTabAtIndex: false, contentViewForTabAtIndex: false)
+    internal var delegateHas = _delegateHas(didChangeTabToIndex: false, willChangeTabToIndex: false, widthForTabIndex: false)
     
     
+    struct _datasourceHas{
+        var numberOfTabsForViewPager:Bool =  false
+        var viewForTabIndex:Bool = false
+        var contentViewControllerForTabAtIndex:Bool = false
+        var contentViewForTabAtIndex:Bool = false
+    }
     
+    struct _delegateHas{
+        var didChangeTabToIndex:Bool = false
+        var willChangeTabToIndex:Bool = false
+        var  widthForTabIndex:Bool = false
+    }
+
     // MARK: - Life cycle
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -180,15 +194,44 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
     
     // MARK: - Functions 
     func commonInit () {
-        
+        self.indicatorColor = UIColor.blue
+        self.fixTabWidth = true
+        self.tabWidth = 128.0
+        self.tabHeight = 44.0
+        self.indicatorHeight = 2.0
+        self.padding = 0.0
+        self.indicatorWidth = 128.0
+        self.fixIndicatorWidth = true
+        self.leadingPadding = 0.0
+        self.trailingPadding = 0.0
+        self.defaultDisplayPageIndex = 0
+        self.tabAnimationType = GLTabAnimationType.GLTabAnimationType_None
+        self.animationTabDuration = 0.3
+        self._setNeedsReload()
     }
     
-    func setDataSource() -> Void {
+    func setDataSource(newDataSource:GLViewPagerViewControllerDataSource) -> Void {
+        self.dataSource = newDataSource
         
+        datasouceHas.numberOfTabsForViewPager = newDataSource.responds(to: #selector(GLViewPagerViewControllerDataSource.numberOfTabsForViewPager(_:)))
+       
+        datasouceHas.contentViewForTabAtIndex = newDataSource.responds(to: #selector(GLViewPagerViewControllerDataSource.contentViewForTabAtIndex(_:index:)))
+        
+        datasouceHas.viewForTabIndex = newDataSource.responds(to: #selector(GLViewPagerViewControllerDataSource.viewForTabIndex(_:index:)))
+       
+        datasouceHas.contentViewControllerForTabAtIndex = newDataSource.responds(to: #selector(GLViewPagerViewControllerDataSource.contentViewControllerForTabAtIndex(_:index:)))
+        
+        self ._setNeedsReload()
     }
     
-    func setDelegate() -> Void {
+    func setDelegate(newDelegate:GLViewPagerViewControllerDelegate) -> Void {
+        self.delegate = newDelegate
         
+        delegateHas.didChangeTabToIndex = newDelegate.responds(to: #selector(GLViewPagerViewControllerDelegate.didChangeTabToIndex(_:index:fromTabIndex:)))
+        
+        delegateHas.willChangeTabToIndex = newDelegate.responds(to: #selector(GLViewPagerViewControllerDelegate.willChangeTabToIndex(_:index:fromTabIndex:progress:)))
+        
+        delegateHas.widthForTabIndex = newDelegate.responds(to: #selector(GLViewPagerViewControllerDelegate.widthForTabIndex(_:index:)))
     }
     
     func reloadData() -> Void {
@@ -196,15 +239,22 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
     }
     
     func _setNeedsReload() -> Void {
-        
+        _needsReload = true
+        self.view.setNeedsLayout()
     }
     
     func _reloadDataIfNeed() -> Void {
-        
+        if _needsReload {
+            self .reloadData()
+        }
     }
     
     func _layoutSubviews() -> Void {
         
+    }
+    
+    open func tabViewAtIndex(index:Int) -> UIView {
+        return self.tabViews.object(at: index) as! UIView
     }
     
     // MARK: - Notification 
