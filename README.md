@@ -5,4 +5,4 @@ GLViewPagerViewController属于公用控件，常见于新闻资讯模块，这�
 
 GLViewPagerViewController is an common public control, it is usally used in news, here use UIPageViewController and UIScrollView as tab container to build it.
 
-[Refer link](https://github.com/XuYanci/GLViewPagerViewController)
+[Refer link](https://github.com/XuYanci/GLViewPagerController)
