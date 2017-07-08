@@ -65,7 +65,7 @@ class ViewController: GLViewPagerViewController,GLViewPagerViewControllerDataSou
         self.tabAnimationType = GLTabAnimationType.GLTabAnimationType_WhileScrolling
         self.indicatorColor = UIColor.init(colorLiteralRed: 255.0 / 255.0, green: 205.0 / 255.0, blue: 0.0, alpha: 1.0)
         self.supportArabic = false
-        self.fixTabWidth = true
+        self.fixTabWidth = false
         
         
         self.viewControllers = [

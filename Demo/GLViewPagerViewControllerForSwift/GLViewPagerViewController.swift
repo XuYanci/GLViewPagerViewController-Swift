@@ -392,8 +392,8 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
                 }
                 
                 tabView.isUserInteractionEnabled = true
-                tabView .addGestureRecognizer(UIGestureRecognizer.init(target: self, action: #selector(self.tapInTabView(tapGR:))))
-                
+                tabView .addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(self.tapInTabView(tapGR:))))
+            
                 if preTabView == nil {
                     var rect:CGRect = tabView.frame
                     rect.size.width = self.fixTabWidth ? self.tabWidth : self ._getTabWidthAtIndex(tabIndex: index)
