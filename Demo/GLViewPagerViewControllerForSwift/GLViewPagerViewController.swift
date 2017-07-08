@@ -44,7 +44,7 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
     
     
     // MARK: - public properties
-    open var dataSource: GLViewPagerViewControllerDataSource!
+    open var dataSource: GLViewPagerViewControllerDataSource?
     
     open var delegate: GLViewPagerViewControllerDelegate?
     
@@ -359,9 +359,9 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
         }
         
         // Fill tab
-        var numberOfTabs:Int = 0
+        var numberOfTabs:Int! = 0
         if _datasourceHas.numberOfTabsForViewPager {
-            numberOfTabs = dataSource.numberOfTabsForViewPager!(self)
+            numberOfTabs = dataSource?.numberOfTabsForViewPager!(self)
         }
         
         if _datasourceHas.viewForTabIndex {
@@ -375,16 +375,16 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
             var tabContentWidth:CGFloat = 0.0
          
             for index in 0 ... numberOfTabs - 1 {
-                var tabView:UIView = UIView.init()
+                var tabView:UIView! = UIView.init()
                 if self.supportArabic {
-                    tabView = (self.dataSource.viewForTabIndex!(self, index: numberOfTabs - index - 1))
+                    tabView = (self.dataSource?.viewForTabIndex!(self, index: numberOfTabs - index - 1))
                     assert(tabView .isKind(of: UIView.self), "This is not an UIView subclass")
                     self.tabContentView .addSubview(tabView)
                     self.tabViews .insert(tabView, at: 0)
                     tabView.tag = kTabTagBegin + (numberOfTabs - index - 1)
                 }
                 else {
-                    tabView = dataSource .viewForTabIndex!(self, index: index)
+                    tabView = dataSource?.viewForTabIndex!(self, index: index)
                     assert(tabView .isKind(of: UIView.self), "This is not an UIView subclass")
                     self.tabContentView .addSubview(tabView)
                     self.tabViews .append(tabView)
@@ -429,12 +429,12 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
             for i in 0 ... numberOfTabs - 1 {
                var viewController:UIViewController!
                 if self.supportArabic {
-                    viewController = self.dataSource .contentViewControllerForTabAtIndex!(self, index: numberOfTabs - i - 1)
+                    viewController = self.dataSource?.contentViewControllerForTabAtIndex!(self, index: numberOfTabs - i - 1)
                     assert(viewController .isKind(of: UIViewController.self), "This is not an UIViewController subclass")
                     self.contentViewControllers .insert(viewController, at: 0)
                 }
                 else {
-                    viewController = self.dataSource.contentViewControllerForTabAtIndex!(self, index: i)
+                    viewController = self.dataSource?.contentViewControllerForTabAtIndex!(self, index: i)
                     assert(viewController .isKind(of: UIViewController.self), "This is not an UIViewController subclass")
                     self.contentViewControllers .append(viewController)
                 }
