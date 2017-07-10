@@ -542,7 +542,7 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
     
     
     func _setActivePageIndex(pageIndex:Int) -> Void {
-        assert(pageIndex < self.contentViewControllers.count - 1, "Default display page index is bigger than amount of view controller")
+        assert(pageIndex < self.contentViewControllers.count, "Default display page index is bigger than amount of view controller")
         
         var direction:UIPageViewControllerNavigationDirection = self.supportArabic ? UIPageViewControllerNavigationDirection.forward : UIPageViewControllerNavigationDirection.reverse
         if pageIndex > _currentPageIndex {
