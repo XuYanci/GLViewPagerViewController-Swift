@@ -1,10 +1,24 @@
+// GLViewPagerViewController.swift
 //
-//  GLViewPagerViewController.swift
-//  GLViewPagerViewControllerForSwift
+// Copyright (c) 2017 XuYanci (http://yanci.me)
 //
-//  Created by Yanci on 2017/6/26.
-//  Copyright © 2017年 Yanci. All rights reserved.
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 import UIKit
 
@@ -44,9 +58,9 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
     
     
     // MARK: - public properties
-    open var dataSource: GLViewPagerViewControllerDataSource?
+    weak open var dataSource: GLViewPagerViewControllerDataSource?
     
-    open var delegate: GLViewPagerViewControllerDelegate?
+    weak open var delegate: GLViewPagerViewControllerDelegate?
     
     open var indicatorColor: UIColor = UIColor.blue
     
@@ -240,7 +254,7 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
             var offset:CGFloat = 0
             var indicationAnimationWidth:CGFloat = 0
             let currentPageIndex:Int = _currentPageIndex
-            var indicatorViewFrame:CGRect = self ._caculateTabViewFrame(tabIndex: currentPageIndex)
+            var indicatorViewFrame:CGRect = self ._caculateIndicatorViewFrame(tabIndex: currentPageIndex)
             // left to right
             if scrollView.contentOffset.x - scrollView.frame.size.width > 0 {
                 if self.supportArabic {
@@ -282,7 +296,7 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
                 }
             }
             indicatorViewFrame.origin.x += offset
-            indicatorViewFrame.size.width = indicationAnimationWidth
+          indicatorViewFrame.size.width = self.fixIndicatorWidth ? self.indicatorWidth : indicationAnimationWidth
             self.indicatorView.frame = indicatorViewFrame
         }
     }
@@ -510,15 +524,15 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
     func _setActiveTabIndex(tabIndex:Int) -> Void {
         assert(tabIndex <= self.tabViews.count - 1, "Default display page index is bigger than amount of view ocntroller")
         
-        let frameofTabView:CGRect = self ._caculateTabViewFrame(tabIndex: tabIndex)
+        let frameOfIndicatorView:CGRect = self ._caculateIndicatorViewFrame(tabIndex: tabIndex)
         if self.tabAnimationType == GLTabAnimationType.GLTabAnimationType_End ||
             self.tabAnimationType == GLTabAnimationType.GLTabAnimationType_WhileScrolling{
             UIView .animate(withDuration: TimeInterval(self.animationTabDuration), animations: { 
-                self.indicatorView.frame = frameofTabView
+                self.indicatorView.frame = frameOfIndicatorView
             })
         }
         else if self.tabAnimationType == GLTabAnimationType.GLTabAnimationType_None {
-            self.indicatorView.frame = frameofTabView
+            self.indicatorView.frame = frameOfIndicatorView
         }
         
         let tabView:UIView = self.tabViews[tabIndex] 
@@ -562,21 +576,31 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
         return tabWidth == 0 ? tabView.intrinsicContentSize.width : tabWidth
     }
  
-    func _caculateTabViewFrame(tabIndex:Int) -> CGRect {
-        var frameOfTabView:CGRect = CGRect.zero
+    func _caculateIndicatorViewFrame(tabIndex:Int) -> CGRect {
+        var frameOfIndicatorView:CGRect = CGRect.zero
         
         if self.fixTabWidth {
             if self.supportArabic {
-                frameOfTabView.origin.x = self.tabContentView.contentSize.width - ( CGFloat(tabIndex) * self.tabWidth  + (CGFloat(tabIndex) * self.padding) + self.trailingPadding) - self.tabWidth
-                frameOfTabView.origin.y = self.tabHeight - self.indicatorHeight
-                frameOfTabView.size.height = self.indicatorHeight
-                frameOfTabView.size.width = self.tabWidth
+                frameOfIndicatorView.origin.x = self.tabContentView.contentSize.width - ( CGFloat(tabIndex) * self.tabWidth  + (CGFloat(tabIndex) * self.padding) + self.trailingPadding) - self.tabWidth
+                frameOfIndicatorView.origin.y = self.tabHeight - self.indicatorHeight
+                frameOfIndicatorView.size.height = self.indicatorHeight
+                frameOfIndicatorView.size.width = self.tabWidth
+              
+              if self.fixIndicatorWidth {
+                frameOfIndicatorView.origin.x += (frameOfIndicatorView.size.width) / 2.0
+                frameOfIndicatorView.size.width = self.indicatorWidth
+              }
             }
             else {
-                frameOfTabView.origin.x =  CGFloat(tabIndex) * self.tabWidth + (CGFloat(tabIndex) * self.padding) + self.leadingPadding
-                frameOfTabView.origin.y = self.tabHeight - self.indicatorHeight
-                frameOfTabView.size.height = self.indicatorHeight
-                frameOfTabView.size.width = self.tabWidth
+                frameOfIndicatorView.origin.x =  CGFloat(tabIndex) * self.tabWidth + (CGFloat(tabIndex) * self.padding) + self.leadingPadding
+                frameOfIndicatorView.origin.y = self.tabHeight - self.indicatorHeight
+                frameOfIndicatorView.size.height = self.indicatorHeight
+                frameOfIndicatorView.size.width = self.tabWidth
+              
+              if self.fixIndicatorWidth {
+                frameOfIndicatorView.origin.x += (frameOfIndicatorView.size.width) / 2.0
+                frameOfIndicatorView.size.width = self.indicatorWidth
+              }
             }
         }
         else {
@@ -591,12 +615,16 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
                 }
                 
                 x += previousTabView.frame.maxX
-                frameOfTabView = CGRect.zero
-                frameOfTabView.origin.x = x
-                frameOfTabView.origin.y = self.tabHeight - self.indicatorHeight
-                frameOfTabView.size.height = self.indicatorHeight
-                frameOfTabView.size.width = self ._getTabWidthAtIndex(tabIndex: tabIndex)
-                
+                frameOfIndicatorView = CGRect.zero
+                frameOfIndicatorView.origin.x = x
+                frameOfIndicatorView.origin.y = self.tabHeight - self.indicatorHeight
+                frameOfIndicatorView.size.height = self.indicatorHeight
+                frameOfIndicatorView.size.width = self ._getTabWidthAtIndex(tabIndex: tabIndex)
+              
+              if self.fixIndicatorWidth {
+                frameOfIndicatorView.origin.x += (frameOfIndicatorView.size.width) / 2.0
+                frameOfIndicatorView.size.width = self.indicatorWidth
+              }
             }
             else {
                 let previousTabView:UIView = tabIndex > 0 ? self.tabViews[tabIndex - 1] : UIView()
@@ -608,15 +636,21 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
                     x += self.padding
                 }
                 x += previousTabView.frame.maxX
-                frameOfTabView = CGRect.zero
-                frameOfTabView.origin.x = x
-                frameOfTabView.origin.y = self.tabHeight - self.indicatorHeight
-                frameOfTabView.size.height = self.indicatorHeight
-                frameOfTabView.size.width = self._getTabWidthAtIndex(tabIndex: tabIndex)
-            }
+                frameOfIndicatorView = CGRect.zero
+                frameOfIndicatorView.origin.x = x
+                frameOfIndicatorView.origin.y = self.tabHeight - self.indicatorHeight
+                frameOfIndicatorView.size.height = self.indicatorHeight
+                frameOfIndicatorView.size.width = self._getTabWidthAtIndex(tabIndex: tabIndex)
+              
+              if self.fixIndicatorWidth {
+                frameOfIndicatorView.origin.x += (frameOfIndicatorView.size.width) / 2.0
+                frameOfIndicatorView.size.width = self.indicatorWidth
+              }
+              
+          }
             
         }
-        return frameOfTabView
+        return frameOfIndicatorView
     }
    
     
