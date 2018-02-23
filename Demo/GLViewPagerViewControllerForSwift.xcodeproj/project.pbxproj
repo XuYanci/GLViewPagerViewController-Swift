@@ -14,7 +14,7 @@
 		AD61E4C71F00F0E7000A28DD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD61E4C51F00F0E7000A28DD /* LaunchScreen.storyboard */; };
 		AD61E4D21F00F0E7000A28DD /* GLViewPagerViewControllerForSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD61E4D11F00F0E7000A28DD /* GLViewPagerViewControllerForSwiftTests.swift */; };
 		AD61E4DD1F00F0E7000A28DD /* GLViewPagerViewControllerForSwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD61E4DC1F00F0E7000A28DD /* GLViewPagerViewControllerForSwiftUITests.swift */; };
-		AD61E4EB1F00F199000A28DD /* GLViewPagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD61E4EA1F00F199000A28DD /* GLViewPagerViewController.swift */; };
+		ADD98AE3203FEC970062D295 /* GLViewPagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD98AE2203FEC960062D295 /* GLViewPagerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,7 +48,7 @@
 		AD61E4D81F00F0E7000A28DD /* GLViewPagerViewControllerForSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GLViewPagerViewControllerForSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD61E4DC1F00F0E7000A28DD /* GLViewPagerViewControllerForSwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLViewPagerViewControllerForSwiftUITests.swift; sourceTree = "<group>"; };
 		AD61E4DE1F00F0E7000A28DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AD61E4EA1F00F199000A28DD /* GLViewPagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLViewPagerViewController.swift; sourceTree = "<group>"; };
+		ADD98AE2203FEC960062D295 /* GLViewPagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GLViewPagerViewController.swift; path = ../../GLViewPagerViewController/Classes/GLViewPagerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +99,7 @@
 		AD61E4BB1F00F0E7000A28DD /* GLViewPagerViewControllerForSwift */ = {
 			isa = PBXGroup;
 			children = (
-				AD61E4EA1F00F199000A28DD /* GLViewPagerViewController.swift */,
+				ADD98AE2203FEC960062D295 /* GLViewPagerViewController.swift */,
 				AD61E4BC1F00F0E7000A28DD /* AppDelegate.swift */,
 				AD61E4BE1F00F0E7000A28DD /* ViewController.swift */,
 				AD61E4C01F00F0E7000A28DD /* Main.storyboard */,
@@ -264,7 +264,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD61E4BF1F00F0E7000A28DD /* ViewController.swift in Sources */,
-				AD61E4EB1F00F199000A28DD /* GLViewPagerViewController.swift in Sources */,
+				ADD98AE3203FEC970062D295 /* GLViewPagerViewController.swift in Sources */,
 				AD61E4BD1F00F0E7000A28DD /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
