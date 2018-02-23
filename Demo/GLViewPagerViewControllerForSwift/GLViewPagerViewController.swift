@@ -587,7 +587,7 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
                 frameOfIndicatorView.size.width = self.tabWidth
               
               if self.fixIndicatorWidth {
-                frameOfIndicatorView.origin.x += (frameOfIndicatorView.size.width) / 2.0
+                frameOfIndicatorView.origin.x += (frameOfIndicatorView.size.width) / 2.0 -  indicatorWidth / 2.0
                 frameOfIndicatorView.size.width = self.indicatorWidth
               }
             }
@@ -598,7 +598,7 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
                 frameOfIndicatorView.size.width = self.tabWidth
               
               if self.fixIndicatorWidth {
-                frameOfIndicatorView.origin.x += (frameOfIndicatorView.size.width) / 2.0
+                frameOfIndicatorView.origin.x += (frameOfIndicatorView.size.width) / 2.0 - indicatorWidth / 2.0
                 frameOfIndicatorView.size.width = self.indicatorWidth
               }
             }
@@ -622,7 +622,7 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
                 frameOfIndicatorView.size.width = self ._getTabWidthAtIndex(tabIndex: tabIndex)
               
               if self.fixIndicatorWidth {
-                frameOfIndicatorView.origin.x += (frameOfIndicatorView.size.width) / 2.0
+                frameOfIndicatorView.origin.x += (frameOfIndicatorView.size.width) / 2.0 - indicatorWidth / 2.0
                 frameOfIndicatorView.size.width = self.indicatorWidth
               }
             }
@@ -643,7 +643,7 @@ open class GLViewPagerViewController: UIViewController, UIPageViewControllerData
                 frameOfIndicatorView.size.width = self._getTabWidthAtIndex(tabIndex: tabIndex)
               
               if self.fixIndicatorWidth {
-                frameOfIndicatorView.origin.x += (frameOfIndicatorView.size.width) / 2.0
+                frameOfIndicatorView.origin.x += (frameOfIndicatorView.size.width) / 2.0 - indicatorWidth / 2.0
                 frameOfIndicatorView.size.width = self.indicatorWidth
               }
               
